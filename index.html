@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Didáctica: Ley de Senos y Cosenos - Escolaris</title>
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILOS GENERALES Y RESET --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff; /* Azul claro de fondo */
+            color: #244b5a; /* Azul oscuro corporativo */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Evitar scroll en la página principal */
+        }
+
+        /* --- CONTENEDOR PRINCIPAL (ESTILO IFRAME/PRESENTACIÓN) --- */
+        #presentation-container {
+            width: 100%;
+            max-width: 1280px; /* Ancho máximo para HD */
+            aspect-ratio: 16/9; /* Proporción panorámica */
+            background-color: #ffffff;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- DIAPOSITIVAS --- */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* Ocultas por defecto */
+            flex-direction: column;
+            padding: 40px 80px;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            background: linear-gradient(135deg, #ffffff 80%, #f0f8ff 100%);
+            overflow-y: auto; /* Permite scroll interno si el contenido es muy largo en móviles */
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* --- TIPOGRAFÍA (IDENTIDAD ESCOLARIS) --- */
+        h1, h2, h3 {
+            color: #db6015; /* Naranja quemado */
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        h1 { font-size: 3.5rem; line-height: 1.1; }
+        h2 { font-size: 2.5rem; }
+        h3 { font-size: 1.8rem; color: #244b5a; }
+
+        p, li {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #244b5a;
+            margin-bottom: 15px;
+        }
+
+        .highlight { color: #db6015; font-weight: bold; }
+        
+        /* --- NAVEGACIÓN (FLECHAS) --- */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(36, 75, 90, 0.1); /* Fondo sutil */
+            color: #244b5a;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 100; /* Siempre encima */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .nav-arrow:hover {
+            background-color: #db6015;
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: default;
+            pointer-events: none;
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* --- MAQUETACIÓN --- */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            gap: 40px;
+            height: 100%;
+        }
+
+        .col-text { flex: 1; }
+        .col-image { flex: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+
+        .centered-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Estilo para imágenes y SVGs */
+        img, svg {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        /* --- COMPONENTES INTERACTIVOS --- */
+        .btn-action {
+            background-color: #244b5a;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+            font-family: inherit;
+        }
+
+        .btn-action:hover {
+            background-color: #db6015;
+            transform: scale(1.05);
+        }
+
+        .card-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .info-card {
+            background: white;
+            border-left: 5px solid #f7be00;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            flex: 1;
+            text-align: left;
+        }
+
+        .formula-box {
+            background-color: #f0f8ff;
+            border: 2px solid #244b5a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-family: 'Times New Roman', serif;
+            margin: 20px 0;
+            color: #993921;
+        }
+
+        /* --- QUIZ Y ACTIVIDADES --- */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            text-align: left;
+            font-family: inherit;
+            color: #244b5a;
+        }
+
+        .quiz-option:hover {
+            border-color: #f7be00;
+            background-color: #fff9e6;
+        }
+
+        .quiz-option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .quiz-option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback-msg {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            min-height: 1.5em;
+            text-align: center;
+        }
+
+        /* --- PIE DE PÁGINA Y BARRA DE PROGRESO --- */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background-color: #f7be00;
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 150;
+        }
+        
+        .slide-footer {
+            position: absolute;
+            bottom: 20px;
+            right: 90px;
+            font-size: 1rem;
+            color: #999;
+            z-index: 90;
+        }
+
+        /* --- ESTILOS ESPECÍFICOS --- */
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #ffffff 0%, #f0f8ff 100%);
+        }
+
+        .cover-circle {
+            width: 180px;
+            height: 180px;
+            background-color: #f7be00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 4rem;
+            color: #244b5a;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-wrapper { flex-direction: column; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .slide { padding: 60px 20px 40px 20px; } /* Más espacio arriba para flechas */
+            .nav-arrow { width: 40px; height: 40px; font-size: 1.5rem; top: 95%; transform: translateY(0); }
+            .prev-btn { left: 20px; top: auto; bottom: 20px; }
+            .next-btn { right: 20px; top: auto; bottom: 20px; }
+            .card-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <button class="nav-arrow prev-btn" onclick="changeSlide(-1)" title="Anterior">&#10094;</button>
+    <button class="nav-arrow next-btn" onclick="changeSlide(1)" title="Siguiente">&#10095;</button>
+
+    <!-- 1. PORTADA -->
+    <div class="slide active cover-slide">
+        <div class="cover-circle">📐</div>
+        <h1>Ley de Senos y Cosenos</h1>
+        <h2 style="color: #244b5a; font-size: 1.8rem; font-weight: 400;">Materia: Matemáticas | Grado: Básico 2</h2>
+        <div style="margin-top: 40px;">
+            <p style="font-size: 1.5rem; color: #993921;">"Las matemáticas son el lenguaje con el que se escribe el universo"</p>
+            <p>¡Aprender a medir el mundo puede ser fascinante!</p>
+        </div>
+    </div>
+
+    <!-- 2. OBJETIVOS -->
+    <div class="slide">
+        <h2>Objetivos de Aprendizaje</h2>
+        <div class="content-wrapper">
+            <div class="col-text">
+                <p>Al finalizar esta lección, serás capaz de:</p>
+                <ul style="list-style: none;">
+                    <li style="background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #db6015; margin-bottom: 20px;">
+                        <strong>1. Identificar</strong> qué es un triángulo oblicuángulo y en qué se diferencia de un triángulo rectángulo.
+                    </li>
+                    <li style="background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #f7be00; margin-bottom: 20px;">
+                        <strong>2. Aplicar</strong> la Ley de Senos para encontrar lados o ángulos faltantes.
+                    </li>
+                    <li style="background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #244b5a;">
+                        <strong>3. Utilizar</strong> la Ley de Cosenos en situaciones donde la ley de senos no es suficiente.
+                    </li>
+                </ul>
+            </div>
+            <div class="col-image">
+                <div style="font-size: 10rem;">🎯</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ACTIVACIÓN -->
+    <div class="slide">
+        <h2>¿Alguna vez te has preguntado...?</h2>
+        <div class="content-wrapper">
+            <div class="col-image">
+                <!-- SVG Ilustración Topografía -->
+                <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="background:#f0f8ff; border-radius:12px;">
+                    <!-- Cielo -->
+                    <rect width="500" height="400" fill="#e6f3ff"/>
+                    <!-- Montañas -->
+                    <path d="M50 300 L150 100 L250 300 Z" fill="#7d7d7d"/>
+                    <path d="M200 300 L350 50 L500 300 Z" fill="#5c5c5c"/>
+                    <!-- Lago -->
+                    <path d="M0 300 L500 300 L500 400 L0 400 Z" fill="#4a90e2"/>
+                    <!-- Línea de Distancia -->
+                    <line x1="150" y1="320" x2="350" y2="320" stroke="#db6015" stroke-width="3" stroke-dasharray="5,5"/>
+                    <text x="250" y="310" text-anchor="middle" fill="#db6015" font-weight="bold" font-size="20">¿Distancia?</text>
+                    <!-- Topógrafo -->
+                    <circle cx="100" cy="320" r="10" fill="#244b5a"/>
+                    <line x1="100" y1="330" x2="100" y2="360" stroke="#244b5a" stroke-width="3"/>
+                </svg>
+            </div>
+            <div class="col-text">
+                <h3 class="highlight">¿Cómo medimos distancias imposibles de caminar?</h3>
+                <p>Imagina que eres un topógrafo y necesitas medir la distancia entre dos montañas separadas por un lago profundo. No puedes simplemente extender una cinta métrica sobre el agua.</p>
+                <p>Aquí es donde las herramientas básicas (como Pitágoras) no son suficientes, porque en la naturaleza, <strong>no todos los triángulos tienen un ángulo recto (90°)</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. PALABRAS CLAVE -->
+    <div class="slide">
+        <h2 style="text-align: center;">Conceptos Clave</h2>
+        <div class="card-container">
+            <div class="info-card" style="border-color: #db6015;">
+                <h3 style="color: #db6015;">Triángulo Oblicuángulo</h3>
+                <p>Es cualquier triángulo que <strong>no</strong> tiene un ángulo recto (90°). Puede tener todos sus ángulos agudos o uno obtuso.</p>
+                <div style="font-size: 3rem; text-align: center; margin-top: 10px;">△</div>
+            </div>
+            <div class="info-card" style="border-color: #244b5a;">
+                <h3 style="color: #244b5a;">Seno (sin)</h3>
+                <p>Relación entre el lado opuesto a un ángulo y la hipotenusa (en rectángulos), pero fundamental para relacionar lados y ángulos opuestos en cualquier triángulo.</p>
+            </div>
+            <div class="info-card" style="border-color: #f7be00;">
+                <h3 style="color: #f7be00; color:#b58b00;">Coseno (cos)</h3>
+                <p>Relación trigonométrica usada para encontrar un lado cuando conocemos los otros dos y el ángulo que forman.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. OBLICUÁNGULOS VS RECTÁNGULOS -->
+    <div class="slide">
+        <h2>El Triángulo Oblicuángulo</h2>
+        <div class="content-wrapper">
+            <div class="col-text">
+                <p>Hasta ahora, probablemente has usado el Teorema de Pitágoras (a² + b² = c²). Ese teorema es fantástico, pero <strong>solo funciona si tienes un ángulo de 90°</strong>.</p>
+                <p>En la vida real (techos inclinados, navegación de aviones, estructuras de puentes), la mayoría de los triángulos son <strong>oblicuángulos</strong>.</p>
+                <p class="highlight">Regla de oro: No hay ángulo recto = No hay Pitágoras.</p>
+            </div>
+            <div class="col-image">
+                <div style="display: flex; gap: 40px; align-items: flex-end;">
+                    <div style="text-align: center;">
+                        <div style="width: 0; height: 0; border-left: 50px solid transparent; border-right: 0px solid transparent; border-bottom: 100px solid #999;"></div>
+                        <p style="font-size: 1rem;">Rectángulo<br>(90°)</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 0; height: 0; border-left: 50px solid transparent; border-right: 80px solid transparent; border-bottom: 100px solid #db6015;"></div>
+                        <p style="font-size: 1rem;">Oblicuángulo<br>(Sin ángulo recto)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. LEY DE SENOS -->
+    <div class="slide">
+        <h2>Ley de Senos</h2>
+        <p>Imagina que el triángulo es una familia. Cada lado está "casado" con su ángulo opuesto.</p>
+        
+        <div class="formula-box">
+            <span style="font-style: italic;">a</span> / sen(<span style="font-style: italic;">A</span>) = 
+            <span style="font-style: italic;">b</span> / sen(<span style="font-style: italic;">B</span>) = 
+            <span style="font-style: italic;">c</span> / sen(<span style="font-style: italic;">C</span>)
+        </div>
+
+        <div class="content-wrapper">
+            <div class="col-text">
+                <h3>¿Cuándo se usa?</h3>
+                <p>Es como una "regla de tres" avanzada. Úsala cuando conozcas una pareja completa (lado y ángulo opuesto) y un dato más.</p>
+                <ul>
+                    <li>✅ Conoces 2 ángulos y 1 lado.</li>
+                    <li>✅ Conoces 2 lados y un ángulo opuesto a uno de ellos.</li>
+                </ul>
+            </div>
+            <div class="col-image">
+                <!-- SVG Diagrama Ley Senos -->
+                <svg viewBox="0 0 400 300" style="background:#fff; border-radius:12px; border:1px solid #eee;">
+                    <polygon points="50,250 350,250 250,50" fill="none" stroke="#244b5a" stroke-width="3"/>
+                    <!-- Ángulo A -->
+                    <path d="M80,250 A30,30 0 0,0 70,220" fill="none" stroke="#db6015" stroke-width="2"/>
+                    <text x="60" y="240" fill="#db6015" font-weight="bold">A</text>
+                    <!-- Lado a (Opuesto A) -->
+                    <text x="310" y="150" fill="#db6015" font-weight="bold" font-size="20">a</text>
+                    
+                    <!-- Ángulo B -->
+                    <text x="250" y="80" fill="#244b5a" font-weight="bold">B</text>
+                    <!-- Lado b (Opuesto B) -->
+                    <text x="200" y="270" fill="#244b5a" font-weight="bold" font-size="20">b</text>
+                    
+                    <!-- Flecha relacional -->
+                    <path d="M80,240 Q150,200 280,160" fill="none" stroke="#db6015" stroke-width="1" stroke-dasharray="4"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. LEY DE COSENOS -->
+    <div class="slide">
+        <h2>Ley de Cosenos</h2>
+        <p>Esta ley es el "hermano mayor" de Pitágoras. Funciona cuando la Ley de Senos no tiene suficientes datos.</p>
+
+        <div class="formula-box">
+            c² = a² + b² - 2ab cos(C)
+        </div>
+
+        <div class="content-wrapper">
+            <div class="col-text">
+                <h3>¿Cuándo se usa?</h3>
+                <ul>
+                    <li>✅ <strong>El "Sándwich":</strong> Conoces dos lados y el ángulo atrapado en medio de ellos (Lado-Ángulo-Lado).</li>
+                    <li>✅ <strong>Los Tres Lados:</strong> Conoces cuánto mide cada lado, pero no sabes ningún ángulo (Lado-Lado-Lado).</li>
+                </ul>
+            </div>
+            <div class="col-image">
+                <!-- SVG Diagrama Ley Cosenos -->
+                <svg viewBox="0 0 400 300" style="background:#fff; border-radius:12px; border:1px solid #eee;">
+                    <polygon points="50,250 350,250 150,50" fill="none" stroke="#ccc" stroke-width="2"/>
+                    
+                    <!-- Resaltar LAL (Sándwich) -->
+                    <line x1="50" y1="250" x2="150" y2="50" stroke="#db6015" stroke-width="4"/> <!-- Lado b -->
+                    <line x1="150" y1="50" x2="350" y2="250" stroke="#db6015" stroke-width="4"/> <!-- Lado a -->
+                    
+                    <!-- Ángulo C -->
+                    <path d="M150,80 Q150,100 170,90" fill="none" stroke="#244b5a" stroke-width="3"/>
+                    <text x="145" y="110" fill="#244b5a" font-weight="bold" font-size="20">C</text>
+                    
+                    <!-- Etiquetas -->
+                    <text x="80" y="150" fill="#db6015" font-weight="bold">Lado b</text>
+                    <text x="260" y="150" fill="#db6015" font-weight="bold">Lado a</text>
+                    
+                    <text x="180" y="270" fill="#999">Lado c (Incógnita)</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. EXPLORACIÓN VISUAL -->
+    <div class="slide">
+        <h2>Exploración Visual</h2>
+        <p class="centered-content">Observa esta situación. Haz clic en el botón para ver qué ley usaríamos.</p>
+        
+        <div class="content-wrapper" style="flex-direction: column; text-align: center;">
+            <div style="position: relative; width: 600px; height: 300px; background: #e0e0e0; margin: 20px auto; border-radius: 10px; display: flex; justify-content: center; align-items: center; max-width: 100%;">
+                <!-- Simulación Diagrama -->
+                <svg width="400" height="200" viewBox="0 0 400 200">
+                    <polygon points="50,180 350,180 200,50" style="fill:none;stroke:#244b5a;stroke-width:3" />
+                    <text x="180" y="195" fill="#244b5a">Lado C = ?</text>
+                    <text x="80" y="120" fill="#db6015">Lado b = 10m</text>
+                    <text x="260" y="120" fill="#db6015">Lado a = 12m</text>
+                    <text x="185" y="80" fill="#f7be00">50°</text>
+                </svg>
+            </div>
+            
+            <button class="btn-action" onclick="document.getElementById('explore-reveal').style.opacity = '1'">¿Qué ley aplicamos aquí?</button>
+            
+            <div id="explore-reveal" style="opacity: 0; transition: opacity 0.5s; margin-top: 20px; background: #d4edda; padding: 15px; border-radius: 8px; color: #155724; max-width: 600px;">
+                <strong>¡Ley de Cosenos!</strong><br>
+                ¿Por qué? Porque tenemos un "Sándwich": conocemos dos lados (10m y 12m) y el ángulo que está entre ellos (50°).
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. QUIZ 1 -->
+    <div class="slide">
+        <h2>Actividad de Comprensión</h2>
+        <p class="centered-content">Selecciona la respuesta correcta para avanzar.</p>
+        
+        <div style="background: white; padding: 30px; border-radius: 12px; max-width: 800px; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="font-weight: bold; margin-bottom: 20px;">Tienes un triángulo donde conoces los tres lados (5cm, 7cm, 9cm) pero ningún ángulo. ¿Qué herramienta usas para hallar un ángulo?</p>
+            
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="checkQuiz(this, false, 'feedback1')">A) Teorema de Pitágoras</button>
+                <button class="quiz-option" onclick="checkQuiz(this, false, 'feedback1')">B) Ley de Senos</button>
+                <button class="quiz-option" onclick="checkQuiz(this, true, 'feedback1')">C) Ley de Cosenos</button>
+            </div>
+            
+            <div id="feedback1" class="feedback-msg"></div>
+        </div>
+    </div>
+
+    <!-- 10. JUEGO -->
+    <div class="slide">
+        <h2>Juego: Clasifica el Problema</h2>
+        <p class="centered-content">Ayuda al arquitecto a elegir la herramienta correcta.</p>
+        
+        <div class="content-wrapper" style="align-items: flex-start;">
+            <div class="col-image" style="flex-direction: column;">
+                <div style="font-size: 5rem; margin-bottom: 20px;">🏗️</div>
+                <p style="text-align: center; font-size: 1rem;">
+                    <strong>Datos del plano:</strong><br>
+                    Ángulo A = 40°<br>
+                    Ángulo B = 60°<br>
+                    Lado a = 20m
+                </p>
+            </div>
+            <div class="col-text">
+                <div class="quiz-options">
+                    <p>¿Qué fórmula debe usar?</p>
+                    <button class="quiz-option" onclick="checkGame(this, true)">
+                        <strong>Ley de Senos</strong><br>
+                        <small>Porque tiene una pareja completa (Ángulo A y Lado a)</small>
+                    </button>
+                    <button class="quiz-option" onclick="checkGame(this, false)">
+                        <strong>Ley de Cosenos</strong><br>
+                        <small>Porque necesita hallar el tercer lado directamente</small>
+                    </button>
+                </div>
+                <div id="game-feedback" class="feedback-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. APLICACIÓN -->
+    <div class="slide">
+        <h2>Aplicación en la Vida Real</h2>
+        <div class="content-wrapper">
+            <div class="col-text">
+                <h3>Diseño de una Rampa</h3>
+                <p>Necesitas construir una rampa de acceso. Sabes que la rampa mide 5 metros, el suelo mide 4 metros, y el ángulo de elevación es desconocido.</p>
+                <p class="highlight">Reflexión:</p>
+                <p>Las matemáticas nos permiten calcular la inclinación exacta para cumplir con las normas de seguridad, sin tener que construir y desperdiciar material primero.</p>
+            </div>
+            <div class="col-image">
+                <!-- SVG Ilustración Rampa -->
+                <svg viewBox="0 0 400 300" style="background:#fff; border-radius:12px; border:1px solid #eee;">
+                    <!-- Suelo -->
+                    <line x1="0" y1="280" x2="400" y2="280" stroke="#244b5a" stroke-width="2"/>
+                    <!-- Rampa -->
+                    <polygon points="50,280 350,280 350,150" fill="#f7be00" opacity="0.3"/>
+                    <line x1="50" y1="280" x2="350" y2="150" stroke="#db6015" stroke-width="5"/>
+                    
+                    <text x="150" y="200" fill="#db6015" font-weight="bold" transform="rotate(-23 150,200)">Rampa 5m</text>
+                    <text x="200" y="295" fill="#244b5a" font-weight="bold">Suelo 4m</text>
+                    
+                    <!-- Ángulo -->
+                    <path d="M100,280 A50,50 0 0,1 100,260" fill="none" stroke="#244b5a" stroke-width="2"/>
+                    <text x="110" y="270" font-size="20">?</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. REPASO -->
+    <div class="slide">
+        <h2>Repaso Final</h2>
+        <div class="quiz-options" style="max-width: 700px;">
+            <p><strong>Pregunta Final:</strong> ¿Cuál es la principal diferencia para elegir entre Senos y Cosenos?</p>
+            
+            <button class="quiz-option" onclick="checkFinal(this, false)">
+                Si el triángulo es bonito o feo.
+            </button>
+            <button class="quiz-option" onclick="checkFinal(this, true)">
+                Si tengo una "pareja completa" (lado y su ángulo opuesto) uso Senos; si no, Cosenos.
+            </button>
+            <button class="quiz-option" onclick="checkFinal(this, false)">
+                Siempre debo usar Cosenos primero porque es más exacto.
+            </button>
+        </div>
+        <div id="final-feedback" class="feedback-msg"></div>
+    </div>
+
+    <!-- 13. METACOGNICIÓN -->
+    <div class="slide">
+        <h2>Reflexión Personal</h2>
+        <div class="content-wrapper">
+            <div class="col-image">
+                <div style="font-size: 6rem;">🤔</div>
+            </div>
+            <div class="col-text">
+                <h3>Piensa por un momento...</h3>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 30px;">
+                        <strong>1.</strong> ¿Qué parte te pareció más lógica? ¿La idea de las "parejas" en la Ley de Senos o el "Sándwich" en Cosenos?
+                    </li>
+                    <li>
+                        <strong>2.</strong> Aparte de la construcción, ¿en qué otra profesión crees que esto sea vital? (Pista: Navegación aérea o marítima).
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14. CIERRE -->
+    <div class="slide" style="text-align: center; justify-content: center;">
+        <div style="font-size: 8rem; margin-bottom: 20px;">⭐</div>
+        <h1>¡Excelente Trabajo!</h1>
+        <p>Has completado la lección sobre Triángulos Oblicuángulos.</p>
+        <p>Has dado un gran paso en tu formación matemática.</p>
+        <div style="margin-top: 40px; padding: 20px; background-color: #f0f8ff; border-radius: 10px; display: inline-block;">
+            <p style="font-size: 1.2rem; margin: 0;">Colegio Escolaris | Matemáticas Básico 2</p>
+        </div>
+    </div>
+
+    <!-- BARRA DE PROGRESO -->
+    <div class="progress-bar" id="progress"></div>
+    
+    <!-- FOOTER INFO -->
+    <div class="slide-footer">
+        Desliza para navegar ➡️
+    </div>
+
+</div>
+
+<script>
+    /* LÓGICA DE DIAPOSITIVAS */
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progressBar = document.getElementById('progress');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const footerText = document.querySelector('.slide-footer');
+
+    function updateSlide() {
+        // Ocultar todas
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Mostrar actual
+        slides[currentSlide].classList.add('active');
+
+        // Actualizar Botones
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === totalSlides - 1;
+
+        // Actualizar Barra de Progreso
+        const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+        progressBar.style.width = progressPercent + '%';
+
+        // Actualizar texto footer
+        footerText.innerText = `Diapositiva ${currentSlide + 1} de ${totalSlides} | Desliza para navegar ➡️`;
+    }
+
+    function changeSlide(direction) {
+        currentSlide += direction;
+        
+        // Comprobación de límites
+        if (currentSlide < 0) currentSlide = 0;
+        if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+
+        updateSlide();
+    }
+
+    /* LÓGICA DE QUIZZES Y RETROALIMENTACIÓN */
+    
+    // Verificador Quiz Genérico
+    function checkQuiz(btnElement, isCorrect, feedbackId) {
+        const feedbackEl = document.getElementById(feedbackId);
+        const parent = btnElement.parentElement;
+        
+        // Reset estilos
+        const options = parent.querySelectorAll('.quiz-option');
+        options.forEach(opt => {
+            opt.classList.remove('correct', 'incorrect');
+            opt.style.opacity = '0.7'; 
+        });
+
+        btnElement.style.opacity = '1';
+
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            feedbackEl.innerHTML = "<span style='color:#155724'>¡Correcto! La Ley de Cosenos es perfecta cuando tenemos LLL (Lado-Lado-Lado).</span>";
+        } else {
+            btnElement.classList.add('incorrect');
+            if(btnElement.innerText.includes("Pitágoras")) {
+                feedbackEl.innerHTML = "<span style='color:#721c24'>Incorrecto. Pitágoras solo sirve para triángulos rectángulos (90°). Intenta de nuevo.</span>";
+            } else {
+                feedbackEl.innerHTML = "<span style='color:#721c24'>Casi. La Ley de Senos necesita al menos un ángulo conocido. Intenta de nuevo.</span>";
+            }
+        }
+    }
+
+    // Verificador Juego
+    function checkGame(btnElement, isCorrect) {
+        const feedbackEl = document.getElementById('game-feedback');
+        
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            feedbackEl.innerHTML = "<span style='color:#155724'>¡Exacto! Tienes el Ángulo A y el Lado a. ¡Pareja completa = Ley de Senos!</span>";
+        } else {
+            btnElement.classList.add('incorrect');
+            feedbackEl.innerHTML = "<span style='color:#721c24'>Piénsalo bien. ¿Tienes una 'pareja' (letra mayúscula y minúscula igual)? Sí (A y a). Intenta la otra opción.</span>";
+        }
+    }
+
+    // Verificador Final
+    function checkFinal(btnElement, isCorrect) {
+        const feedbackEl = document.getElementById('final-feedback');
+        
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            feedbackEl.innerHTML = "<span style='color:#155724'>¡Brillante! Esa es la clave maestra para resolver cualquier triángulo. ⭐</span>";
+        } else {
+            btnElement.classList.add('incorrect');
+            feedbackEl.innerHTML = "<span style='color:#721c24'>No exactamente. Revisa tus apuntes mentales: busca la 'pareja completa'. Intenta otra vez.</span>";
+        }
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', () => {
+        updateSlide();
+    });
+
+</script>
+
+</body>
+</html>
